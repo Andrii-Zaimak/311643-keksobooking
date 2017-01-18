@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Andrii Zaimak](https://up.htmlacademy.ru/javascript/8/user/311643).
-* Наставник: `Неизвестно`.
+* Наставник: [Вадим Аркадов](https://htmlacademy.ru/profile/id313867).
 
 ---
 
