@@ -4,19 +4,19 @@
 
 'use strict';
 
-var pinsList = document.querySelectorAll('.pin');
-var dialog = document.querySelector('.dialog');
-var dialogCloseBtn = dialog.querySelector('.dialog__close');
+var pinsListNode = document.querySelectorAll('.pin');
+var dialogNode = document.querySelector('.dialogNode');
+var dialogCloseBtnNode = dialogNode.querySelector('.dialog__close');
 
-var noticeForm = document.querySelector('.notice__form');
-var formTitle = noticeForm.querySelector('#title');
-var formPrice = noticeForm.querySelector('#price');
-var formAddress = noticeForm.querySelector('#address');
-var formTime = noticeForm.querySelector('#time');
-var formTimeout = noticeForm.querySelector('#timeout');
-var formType = noticeForm.querySelector('#type');
-var formRoomNumber = noticeForm.querySelector('#room_number');
-var formCapacity = noticeForm.querySelector('#capacity');
+var noticeFormNode = document.querySelector('.notice__form');
+var formTitleNode = noticeFormNode.querySelector('#title');
+var formPriceNode = noticeFormNode.querySelector('#price');
+var formAddressNode = noticeFormNode.querySelector('#address');
+var formTimeNode = noticeFormNode.querySelector('#time');
+var formTimeoutNode = noticeFormNode.querySelector('#timeout');
+var formTypeNode = noticeFormNode.querySelector('#type');
+var formRoomNumberNode = noticeFormNode.querySelector('#room_number');
+var formCapacityNode = noticeFormNode.querySelector('#capacity');
 
 var i;
 
@@ -24,51 +24,51 @@ var i;
 // - not empty
 // - min length
 // - max length
-formTitle.required = true;
-formTitle.minLength = 30;
-formTitle.maxLength = 100;
+formTitleNode.required = true;
+formTitleNode.minLength = 30;
+formTitleNode.maxLength = 100;
 
 // add validation option to form price
 // - not empty
 // - type number
 // - min value
 // - max value
-formPrice.required = true;
-formPrice.type = 'number';
-formPrice.min = 1000;
-formPrice.max = 1000000;
+formPriceNode.required = true;
+formPriceNode.type = 'number';
+formPriceNode.min = 1000;
+formPriceNode.max = 1000000;
 
 // add validation option to form address
 // - not empty
-formAddress.required = true;
+formAddressNode.required = true;
 
 // add click listener to .pin elements
-pinsList.forEach(function (element) {
+pinsListNode.forEach(function (element) {
   element.addEventListener('click', pinSelectHandler);
 });
 
-// add listener to dialog close button
-dialogCloseBtn.addEventListener('click', function () {
-  dialog.style.display = 'none';
+// add listener to dialogNode close button
+dialogCloseBtnNode.addEventListener('click', function () {
+  dialogNode.style.display = 'none';
   removePinActivity();
 });
 
 // add change listener to form time and timeout
-formTime.addEventListener('change', function () {
-  formTimeout.value = formTime.value;
+formTimeNode.addEventListener('change', function () {
+  formTimeoutNode.value = formTimeNode.value;
 });
-formTimeout.addEventListener('change', function () {
-  formTime.value = formTimeout.value;
+formTimeoutNode.addEventListener('change', function () {
+  formTimeNode.value = formTimeoutNode.value;
 });
 
 // add change listener to form type
-formType.addEventListener('change', function () {
-  formPrice.min = formType.value;
+formTypeNode.addEventListener('change', function () {
+  formPriceNode.min = formTypeNode.value;
 });
 
 // add change listener to form room number
-formRoomNumber.addEventListener('change', function () {
-  formCapacity.value = formRoomNumber.value === 2 || formRoomNumber.value === 100 ? 3 : 0;
+formRoomNumberNode.addEventListener('change', function () {
+  formCapacityNode.value = formRoomNumberNode.value === 2 || formRoomNumberNode.value === 100 ? 3 : 0;
 });
 
 
@@ -78,12 +78,12 @@ function pinSelectHandler(evt) {
   removePinActivity();
   // add .pin--active to select element
   evt.currentTarget.classList.add('pin--active');
-  // show dialog
-  dialog.style.display = 'block';
+  // show dialogNode
+  dialogNode.style.display = 'block';
 }
 // remove activity from all pins
 function removePinActivity() {
-  for (i = 0; i < pinsList.length; i++) {
-    pinsList[i].classList.remove('pin--active');
+  for (i = 0; i < pinsListNode.length; i++) {
+    pinsListNode[i].classList.remove('pin--active');
   }
 }
