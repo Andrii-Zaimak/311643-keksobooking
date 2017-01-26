@@ -21,25 +21,17 @@ var formCapacityNode = noticeFormNode.querySelector('#capacity');
 var i;
 
 // add validation option to form title
-// - not empty
-// - min length
-// - max length
 formTitleNode.required = true;
 formTitleNode.minLength = 30;
 formTitleNode.maxLength = 100;
 
 // add validation option to form price
-// - not empty
-// - type number
-// - min value
-// - max value
 formPriceNode.required = true;
 formPriceNode.type = 'number';
 formPriceNode.min = 1000;
 formPriceNode.max = 1000000;
 
 // add validation option to form address
-// - not empty
 formAddressNode.required = true;
 
 // add click listener to .pin elements
