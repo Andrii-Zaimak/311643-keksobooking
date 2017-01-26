@@ -60,7 +60,7 @@ formTypeNode.addEventListener('change', function () {
 
 // add change listener to form room number
 formRoomNumberNode.addEventListener('change', function () {
-  formCapacityNode.value = formRoomNumberNode.value === 2 || formRoomNumberNode.value === 100 ? 3 : 0;
+  formCapacityNode.value = parseInt(formRoomNumberNode.value, 10) === 2 || parseInt(formRoomNumberNode.value, 10) === 100 ? 3 : 0;
 });
 
 // change pin activity
