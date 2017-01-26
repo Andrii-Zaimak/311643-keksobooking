@@ -35,9 +35,9 @@ formPriceNode.max = 1000000;
 formAddressNode.required = true;
 
 // add click listener to .pin elements
-pinsListNode.forEach(function (element) {
-  element.addEventListener('click', pinSelectHandler);
-});
+for (i = 0; i < pinsListNode.length; i++) {
+  pinsListNode[i].addEventListener('click', pinSelectHandler);
+}
 
 // add listener to dialogNode close button
 dialogCloseBtnNode.addEventListener('click', function () {
@@ -62,7 +62,6 @@ formTypeNode.addEventListener('change', function () {
 formRoomNumberNode.addEventListener('change', function () {
   formCapacityNode.value = formRoomNumberNode.value === 2 || formRoomNumberNode.value === 100 ? 3 : 0;
 });
-
 
 // change pin activity
 function pinSelectHandler(evt) {
