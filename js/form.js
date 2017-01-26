@@ -5,7 +5,7 @@
 'use strict';
 
 var pinsListNode = document.querySelectorAll('.pin');
-var dialogNode = document.querySelector('.dialogNode');
+var dialogNode = document.querySelector('.dialog');
 var dialogCloseBtnNode = dialogNode.querySelector('.dialog__close');
 
 var noticeFormNode = document.querySelector('.notice__form');
