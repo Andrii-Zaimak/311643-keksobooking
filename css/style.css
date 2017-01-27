@@ -505,6 +505,10 @@ select option:hover {
     height: 510px;
 }
 
+.dialog--hidden {
+  display: none;
+}
+
 .dialog__title {
     position: relative;
 }
