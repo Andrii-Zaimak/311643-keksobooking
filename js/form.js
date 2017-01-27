@@ -46,7 +46,7 @@ for (i = 0; i < pinsListNode.length; i++) {
 
 // add listener to dialogNode close button
 dialogCloseBtnNode.addEventListener('click', function () {
-  dialogNode.style.visibility = 'hidden';
+  dialogNode.classList.add('dialog--hidden');
   removePinActivity();
 });
 
@@ -77,7 +77,7 @@ function pinSelectHandler(evt) {
   currentPin = evt.currentTarget;
   currentPin.classList.add('pin--active');
   // show dialogNode
-  dialogNode.style.visibility = 'visible';
+  dialogNode.classList.remove('dialog--hidden');
 }
 // remove activity from all pins
 function removePinActivity() {
