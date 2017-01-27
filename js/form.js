@@ -19,6 +19,7 @@ var formRoomNumberNode = noticeFormNode.querySelector('#room_number');
 var formCapacityNode = noticeFormNode.querySelector('#capacity');
 
 var i;
+var currentPin = null;
 
 // add validation option to form title
 formTitleNode.required = true;
@@ -34,14 +35,18 @@ formPriceNode.max = 1000000;
 // add validation option to form address
 formAddressNode.required = true;
 
-// add click listener to .pin elements
+// add click listener to .pin elements and find active
 for (i = 0; i < pinsListNode.length; i++) {
   pinsListNode[i].addEventListener('click', pinSelectHandler);
+  // find active pin
+  if (pinsListNode[i].classList.contains('pin--active')) {
+    currentPin = pinsListNode[i];
+  }
 }
 
 // add listener to dialogNode close button
 dialogCloseBtnNode.addEventListener('click', function () {
-  dialogNode.style.display = 'none';
+  dialogNode.style.visibility = 'hidden';
   removePinActivity();
 });
 
@@ -49,6 +54,7 @@ dialogCloseBtnNode.addEventListener('click', function () {
 formTimeNode.addEventListener('change', function () {
   formTimeoutNode.value = formTimeNode.value;
 });
+
 formTimeoutNode.addEventListener('change', function () {
   formTimeNode.value = formTimeoutNode.value;
 });
@@ -60,7 +66,7 @@ formTypeNode.addEventListener('change', function () {
 
 // add change listener to form room number
 formRoomNumberNode.addEventListener('change', function () {
-  formCapacityNode.value = parseInt(formRoomNumberNode.value, 10) === 2 || parseInt(formRoomNumberNode.value, 10) === 100 ? 3 : 0;
+  formCapacityNode.value = [2, 100].indexOf(+formRoomNumberNode.value) !== -1 ? 3 : 0;
 });
 
 // change pin activity
@@ -68,13 +74,14 @@ function pinSelectHandler(evt) {
   // remove all activity
   removePinActivity();
   // add .pin--active to select element
-  evt.currentTarget.classList.add('pin--active');
+  currentPin = evt.currentTarget;
+  currentPin.classList.add('pin--active');
   // show dialogNode
-  dialogNode.style.display = 'block';
+  dialogNode.style.visibility = 'visible';
 }
 // remove activity from all pins
 function removePinActivity() {
-  for (i = 0; i < pinsListNode.length; i++) {
-    pinsListNode[i].classList.remove('pin--active');
+  if (currentPin !== null) {
+    currentPin.classList.remove('pin--active');
   }
 }
