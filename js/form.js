@@ -4,7 +4,7 @@
 
 'use strict';
 var KEY_CODE_ENTER = 13;
-//var KEY_CODE_ESCAPE = 27;
+// var KEY_CODE_ESCAPE = 27;
 var KEY_CODE_SPACE = 32;
 
 var pinsMapNode = document.querySelector('.tokyo__pin-map');
