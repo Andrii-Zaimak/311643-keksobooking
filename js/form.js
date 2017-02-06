@@ -56,7 +56,7 @@ for (i = 0; i < pinsListNode.length; i++) {
 
 // add click pin listener
 pinsMapNode.addEventListener('click', function (evt) {
-  setActivePin(evt.target.parentNode);
+  setActivePin(evt.target);
 });
 
 pinsMapNode.addEventListener('keydown', function (evt) {
@@ -94,7 +94,7 @@ formRoomNumberNode.addEventListener('change', function () {
  * Remove activity from last active pin.
  */
 function removePinActivity() {
-  if (currentPin !== null) {
+  if (currentPin) {
     currentPin.setAttribute('aria-checked', 'false');
     currentPin.classList.remove('pin--active');
   }
@@ -102,13 +102,20 @@ function removePinActivity() {
 
 /**
  * Set active pin.
- * @param {object} pin - DOM pin element.
+ * @param {Object} target - DOM pin element.
  */
-function setActivePin(pin) {
+function setActivePin(target) {
+  target = getPinElement(target);
+
+  // if not found 'div.pin' return
+  if (!target) {
+    return;
+  }
+
   // remove all activity
   removePinActivity();
   // add .pin--active to select element
-  currentPin = pin;
+  currentPin = target;
   currentPin.setAttribute('aria-checked', 'true');
   currentPin.classList.add('pin--active');
   // show dialogNode
@@ -117,10 +124,26 @@ function setActivePin(pin) {
 
 /**
  * Check for need key is pressed.
- * @param {object} evt - keypress object.
+ * @param {Object} evt - keypress object.
  * @param {Array} keyCodes - list of valid keys.
  * @return {boolean} true - if key is valid, false - if keyCode is undefined or invalid.
  */
 function isValidKeyPressed(evt, keyCodes) {
   return evt.keyCode && keyCodes.indexOf(evt.keyCode) !== -1;
+}
+
+/**
+ * Get pin element.
+ * @param {Object} target - clicked target.
+ * @return {Object|null} null - if target not a 'div.pin'.
+ */
+function getPinElement(target) {
+  while (target !== pinsMapNode) {
+    if (target.tagName === 'DIV' && target.classList.contains('pin')) {
+      return target;
+    }
+    target = target.parentNode;
+  }
+
+  return null;
 }
