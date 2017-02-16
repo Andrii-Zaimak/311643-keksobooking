@@ -4,7 +4,7 @@
 
 'use strict';
 
-window.form = (function () {
+(function () {
   var noticeFormNode = document.querySelector('.notice__form');
   var formTitleNode = noticeFormNode.querySelector('#title');
   var formPriceNode = noticeFormNode.querySelector('#price');
