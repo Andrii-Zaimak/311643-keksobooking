@@ -11,20 +11,22 @@
  * @param {Array} secondArr - values list of second element.
  * @param {string} propertyName - changing property of elements.
  */
-window.synchronizeFields = function (firstElement, secondElement, firstArr, secondArr, propertyName) {
-  var changeElement = function (evt) {
-    var target = evt.target;
-    var index;
+window.synchronizeFields = (function () {
+  return function (firstElement, secondElement, firstArr, secondArr, propertyName) {
+    var changeElement = function (evt) {
+      var target = evt.target;
+      var index;
 
-    if (target === firstElement) {
-      index = firstArr.indexOf(target[propertyName]);
-      secondElement[propertyName] = secondArr[index];
-    } else {
-      index = secondArr.indexOf(target.value);
-      firstElement[propertyName] = firstArr[index];
-    }
+      if (target === firstElement) {
+        index = firstArr.indexOf(target[propertyName]);
+        secondElement[propertyName] = secondArr[index];
+      } else {
+        index = secondArr.indexOf(target.value);
+        firstElement[propertyName] = firstArr[index];
+      }
+    };
+
+    firstElement.addEventListener('change', changeElement);
+    secondElement.addEventListener('change', changeElement);
   };
-
-  firstElement.addEventListener('change', changeElement);
-  secondElement.addEventListener('change', changeElement);
-};
+})();
