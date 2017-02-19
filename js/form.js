@@ -32,12 +32,29 @@
   // add validation option to form address
   formAddressNode.required = true;
 
-  window.synchronizeFields(formTimeNode, formTimeoutNode, ['12', '13', '14'], ['12', '13', '14'], 'value');
+  window.synchronizeFields(formTimeNode, formTimeoutNode, ['12', '13', '14'], ['12', '13', '14'], syncValueWithValue);
+  window.synchronizeFields(formTimeoutNode, formTimeNode, ['12', '13', '14'], ['12', '13', '14'], syncValueWithValue);
 
-  window.synchronizeFields(formRoomNumberNode, formCapacityNode, ['1', '2', '100'], ['0', '3', '3'], 'value');
+  window.synchronizeFields(formRoomNumberNode, formCapacityNode, ['1', '2', '100'], ['0', '3', '3'], syncValueWithValue);
+  window.synchronizeFields(formCapacityNode, formRoomNumberNode, ['0', '3', '3'], ['1', '2', '100'], syncValueWithValue);
 
-  // add change listener to form type
-  formTypeNode.addEventListener('change', function () {
-    formPriceNode.min = formTypeNode.value;
-  });
+  window.synchronizeFields(formTypeNode, formPriceNode, ['apartment', 'shack', 'palace'], [1000, 0, 10000], syncValueWithMin);
+
+  /**
+   * Synchronized elements by field value.
+   * @param {Object} element
+   * @param {number} value
+     */
+  function syncValueWithValue(element, value) {
+    element.value = value;
+  }
+
+  /**
+   * Synchronized elements by field value and min.
+   * @param {Object} element
+   * @param {number} value
+     */
+  function syncValueWithMin(element, value) {
+    element.min = value;
+  }
 })();

@@ -6,12 +6,8 @@
 
 window.initializePins = (function () {
   return function () {
-    var KEY_CODE_ENTER = 13;
-
     var pinsMapNode = document.querySelector('.tokyo__pin-map');
     var pinsListNode = pinsMapNode.querySelectorAll('.pin');
-    var dialogNode = document.querySelector('.dialog');
-    var dialogCloseBtnNode = dialogNode.querySelector('.dialog__close');
 
     var i;
     var currentPin = null;
@@ -37,16 +33,18 @@ window.initializePins = (function () {
     });
 
     pinsMapNode.addEventListener('keydown', function (evt) {
-      if (isValidKeyPressed(evt, [KEY_CODE_ENTER])) {
+      if (window.utils.isValidKeyPressed(evt, [window.utils.KEY_CODE_ENTER])) {
         setActivePin(evt.target);
       }
     });
 
-    // add listener to dialogNode close button
-    dialogCloseBtnNode.addEventListener('click', function () {
-      dialogNode.classList.add('dialog--hidden');
+    /**
+     * Set focus to last focused element.
+     */
+    function setFocusToPin() {
+      currentPin.focus();
       removePinActivity();
-    });
+    }
 
     /**
      * Remove activity from last active pin.
@@ -77,7 +75,7 @@ window.initializePins = (function () {
       currentPin.setAttribute('aria-checked', 'true');
       currentPin.classList.add('pin--active');
       // show dialogNode
-      dialogNode.classList.remove('dialog--hidden');
+      window.showCard(setFocusToPin);
     }
 
     /**
@@ -94,16 +92,6 @@ window.initializePins = (function () {
       }
 
       return null;
-    }
-
-    /**
-     * Check for need key is pressed.
-     * @param {Object} evt - keypress object.
-     * @param {Array} keyCodes - list of valid keys.
-     * @return {boolean} true - if key is valid, false - if keyCode is undefined or invalid.
-     */
-    function isValidKeyPressed(evt, keyCodes) {
-      return evt.keyCode && keyCodes.indexOf(evt.keyCode) !== -1;
     }
   };
 })();
