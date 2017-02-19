@@ -9,24 +9,19 @@
  * @param {Object} secondElement - second element.
  * @param {Array} firstArr - values list of first element.
  * @param {Array} secondArr - values list of second element.
- * @param {string} propertyName - changing property of elements.
+ * @param {function} callback - callback function.
  */
 window.synchronizeFields = (function () {
-  return function (firstElement, secondElement, firstArr, secondArr, propertyName) {
+  return function (firstElement, secondElement, firstArr, secondArr, callback) {
     var changeElement = function (evt) {
       var target = evt.target;
-      var index;
+      var index = firstArr.indexOf(target.value);
 
-      if (target === firstElement) {
-        index = firstArr.indexOf(target[propertyName]);
-        secondElement[propertyName] = secondArr[index];
-      } else {
-        index = secondArr.indexOf(target.value);
-        firstElement[propertyName] = firstArr[index];
+      if (typeof callback === 'function') {
+        callback(secondElement, secondArr[index]);
       }
     };
 
     firstElement.addEventListener('change', changeElement);
-    secondElement.addEventListener('change', changeElement);
   };
 })();
