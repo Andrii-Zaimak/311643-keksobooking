@@ -42,7 +42,7 @@
 
   /**
    * Synchronized elements by field value.
-   * @param {Object} element
+   * @param {Element} element
    * @param {number} value
      */
   function syncValueWithValue(element, value) {
@@ -51,7 +51,7 @@
 
   /**
    * Synchronized elements by field value and min.
-   * @param {Object} element
+   * @param {Element} element
    * @param {number} value
      */
   function syncValueWithMin(element, value) {

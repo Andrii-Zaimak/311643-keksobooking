@@ -8,24 +8,15 @@ window.initializePins = (function () {
   return function () {
     var pinsMapNode = document.querySelector('.tokyo__pin-map');
     var pinsListNode = pinsMapNode.querySelectorAll('.pin');
+    var pinTemplateNode = pinsMapNode.querySelector('#pin-template');
+    var pinClone = pinTemplateNode.content.querySelector('.pin');
 
     var i;
     var currentPin = null;
+    var similarApartments = [];
 
-    // add role and tabindex to pin's
-    for (i = 0; i < pinsListNode.length; i++) {
-      var element = pinsListNode[i];
-      element.setAttribute('role', 'checkbox');
-      element.setAttribute('tabindex', '0');
-
-      // find active pin
-      if (element.classList.contains('pin--active')) {
-        currentPin = element;
-        element.setAttribute('aria-checked', 'true');
-      } else {
-        element.setAttribute('aria-checked', 'false');
-      }
-    }
+    // load apartments list from server
+    window.load('https://intensive-javascript-server-pedmyactpq.now.sh/keksobooking/data', onLoadHandler);
 
     // add click pin listener
     pinsMapNode.addEventListener('click', function (evt) {
@@ -41,7 +32,7 @@ window.initializePins = (function () {
     /**
      * Set focus to last focused element.
      */
-    function setFocusToPin() {
+    function cardCloseHandler() {
       currentPin.focus();
       removePinActivity();
     }
@@ -75,7 +66,7 @@ window.initializePins = (function () {
       currentPin.setAttribute('aria-checked', 'true');
       currentPin.classList.add('pin--active');
       // show dialogNode
-      window.showCard(setFocusToPin);
+      window.showCard(target.dataset.info, cardCloseHandler);
     }
 
     /**
@@ -92,6 +83,44 @@ window.initializePins = (function () {
       }
 
       return null;
+    }
+
+    /**
+     * Load data from server success.
+     * @param {Array|Object} data - data from server in JSON format.
+       */
+    function onLoadHandler(data) {
+      similarApartments = data;
+
+      for (i = 0; i < 3 && i < similarApartments.length; i++) {
+        var elem = pinClone.cloneNode(true);
+        pinsMapNode.appendChild(elem);
+
+        elem.style.left = similarApartments[i].location.x + 'px';
+        elem.style.top = similarApartments[i].location.y + 'px';
+
+        elem.querySelector('img').src = similarApartments[i].author.avatar;
+
+        elem.dataset.info = JSON.stringify(similarApartments[i]);
+      }
+
+      pinsListNode = pinsMapNode.querySelectorAll('.pin');
+
+      // add role and tabindex to pin's
+      for (i = 0; i < pinsListNode.length; i++) {
+        var element = pinsListNode[i];
+        element.setAttribute('role', 'checkbox');
+        element.setAttribute('tabindex', '0');
+
+        // find active pin
+        if (element.classList.contains('pin--active')) {
+          currentPin = element;
+          element.setAttribute('aria-checked', 'true');
+        } else {
+          element.setAttribute('aria-checked', 'false');
+        }
+
+      }
     }
   };
 })();

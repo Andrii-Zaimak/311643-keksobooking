@@ -9,6 +9,9 @@ window.showCard = (function () {
   var dialogCloseBtnNode = dialogNode.querySelector('.dialog__close');
   var onClose = null;
 
+  // card hide for default
+  close();
+
   /**
    * Show dialog.
    */
@@ -42,7 +45,7 @@ window.showCard = (function () {
     }
   }
 
-  return function (callback) {
+  return function (data, callback) {
     onClose = callback;
 
     show(callback);
