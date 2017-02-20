@@ -7,13 +7,13 @@
 window.initializePins = (function () {
   return function () {
     var pinsMapNode = document.querySelector('.tokyo__pin-map');
-    var pinsListNode = pinsMapNode.querySelectorAll('.pin');
     var pinTemplateNode = pinsMapNode.querySelector('#pin-template');
-    var pinClone = pinTemplateNode.content.querySelector('.pin');
+    var pinNode = pinTemplateNode.content.querySelector('.pin');
 
     var i;
     var currentPin = null;
-    var similarApartments = [];
+    var similarApartments = null;
+
 
     // load apartments list from server
     window.load('https://intensive-javascript-server-pedmyactpq.now.sh/keksobooking/data', onLoadHandler);
@@ -66,7 +66,8 @@ window.initializePins = (function () {
       currentPin.setAttribute('aria-checked', 'true');
       currentPin.classList.add('pin--active');
       // show dialogNode
-      window.showCard(target.dataset.info, cardCloseHandler);
+      var apInfo = getApartmentInfo(target);
+      window.showCard(apInfo, cardCloseHandler);
     }
 
     /**
@@ -90,37 +91,75 @@ window.initializePins = (function () {
      * @param {Array|Object} data - data from server in JSON format.
        */
     function onLoadHandler(data) {
-      similarApartments = data;
+      data = Array.isArray(data) ? data : [data];
+      similarApartments = [];
+      // create pins
+      for (i = 0; i < data.length; i++) {
+        var elem = pinNode.cloneNode(true);
 
-      for (i = 0; i < 3 && i < similarApartments.length; i++) {
-        var elem = pinClone.cloneNode(true);
-        pinsMapNode.appendChild(elem);
+        // set element styles
+        elem.style.left = data[i].location.x + 'px';
+        elem.style.top = data[i].location.y + 'px';
+        // add element avatar
+        elem.querySelector('img').src = data[i].author.avatar;
+        // set element attributes
+        elem.setAttribute('role', 'checkbox');
+        elem.setAttribute('tabindex', '0');
+        elem.setAttribute('aria-checked', 'false');
 
-        elem.style.left = similarApartments[i].location.x + 'px';
-        elem.style.top = similarApartments[i].location.y + 'px';
-
-        elem.querySelector('img').src = similarApartments[i].author.avatar;
-
-        elem.dataset.info = JSON.stringify(similarApartments[i]);
+        // add apartments data and element to apartments list
+        similarApartments.push({
+          data: data[i],
+          element: elem
+        });
       }
 
-      pinsListNode = pinsMapNode.querySelectorAll('.pin');
+      addApartments(similarApartments);
+    }
 
-      // add role and tabindex to pin's
-      for (i = 0; i < pinsListNode.length; i++) {
-        var element = pinsListNode[i];
-        element.setAttribute('role', 'checkbox');
-        element.setAttribute('tabindex', '0');
+    /**
+     * Add apartments to map.
+     * @param {Array} list
+       */
+    function addApartments(list) {
+      removeApartments();
 
-        // find active pin
-        if (element.classList.contains('pin--active')) {
-          currentPin = element;
-          element.setAttribute('aria-checked', 'true');
-        } else {
-          element.setAttribute('aria-checked', 'false');
+      var docFrag = document.createDocumentFragment();
+      list.forEach(function (apartment) {
+        docFrag.appendChild(apartment.element);
+      });
+
+      pinsMapNode.appendChild(docFrag);
+    }
+
+    /**
+     * Remove apartments from map.
+     */
+    function removeApartments() {
+      var list = pinsMapNode.querySelectorAll('.pin:not(.pin__main)');
+
+      list.forEach(function (element) {
+        pinsMapNode.removeChild(element);
+      });
+    }
+
+    /**
+     * Get apartment info by element.
+     * @param {Element} element
+     * @return {Object} - return null if apartment info not found.
+     */
+    function getApartmentInfo(element) {
+      if (!similarApartments) {
+        return null;
+      }
+
+      for (i = 0; i < similarApartments.length; i++) {
+        if (similarApartments[i].element === element) {
+          return similarApartments[i].data;
         }
-
       }
+
+      return null;
     }
   };
 })();

@@ -7,6 +7,8 @@
 window.load = (function () {
   return function (url, onLoad) {
     var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+    xhr.timeout = 30000;
 
     xhr.addEventListener('readystatechange', function (evt) {
 
@@ -30,7 +32,7 @@ window.load = (function () {
         case 4:
           try {
             if (typeof onLoad === 'function') {
-              onLoad(JSON.parse(evt.target.response));
+              onLoad(evt.target.response);
             }
           } catch (err) {
             // TODO
