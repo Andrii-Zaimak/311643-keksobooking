@@ -66,8 +66,10 @@ window.initializePins = (function () {
       currentPin.setAttribute('aria-checked', 'true');
       currentPin.classList.add('pin--active');
       // show dialogNode
-      var apInfo = getApartmentInfo(target);
-      window.showCard(apInfo, cardCloseHandler);
+      var apInfo = similarApartments.find(function (apartment) {
+        return apartment.element === target;
+      });
+      window.showCard((apInfo ? apInfo.data : null), cardCloseHandler);
     }
 
     /**
@@ -91,28 +93,22 @@ window.initializePins = (function () {
      * @param {Array|Object} data - data from server in JSON format.
        */
     function onLoadHandler(data) {
-      data = Array.isArray(data) ? data : [data];
       similarApartments = [];
       // create pins
-      for (i = 0; i < data.length; i++) {
+      data.forEach(function (info) {
         var elem = pinNode.cloneNode(true);
 
         // set element styles
-        elem.style.left = data[i].location.x + 'px';
-        elem.style.top = data[i].location.y + 'px';
+        elem.style.left = info.location.x + 'px';
+        elem.style.top = info.location.y + 'px';
         // add element avatar
-        elem.querySelector('img').src = data[i].author.avatar;
-        // set element attributes
-        elem.setAttribute('role', 'checkbox');
-        elem.setAttribute('tabindex', '0');
-        elem.setAttribute('aria-checked', 'false');
-
+        elem.querySelector('img').src = info.author.avatar;
         // add apartments data and element to apartments list
         similarApartments.push({
-          data: data[i],
+          data: info,
           element: elem
         });
-      }
+      });
 
       addApartments(similarApartments);
     }
@@ -124,12 +120,12 @@ window.initializePins = (function () {
     function addApartments(list) {
       removeApartments();
 
-      var docFrag = document.createDocumentFragment();
+      var documentFragment = document.createDocumentFragment();
       list.forEach(function (apartment) {
-        docFrag.appendChild(apartment.element);
+        documentFragment.appendChild(apartment.element);
       });
 
-      pinsMapNode.appendChild(docFrag);
+      pinsMapNode.appendChild(documentFragment);
     }
 
     /**
@@ -141,25 +137,6 @@ window.initializePins = (function () {
       list.forEach(function (element) {
         pinsMapNode.removeChild(element);
       });
-    }
-
-    /**
-     * Get apartment info by element.
-     * @param {Element} element
-     * @return {Object} - return null if apartment info not found.
-     */
-    function getApartmentInfo(element) {
-      if (!similarApartments) {
-        return null;
-      }
-
-      for (i = 0; i < similarApartments.length; i++) {
-        if (similarApartments[i].element === element) {
-          return similarApartments[i].data;
-        }
-      }
-
-      return null;
     }
   };
 })();

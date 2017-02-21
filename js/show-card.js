@@ -75,16 +75,16 @@ window.showCard = (function () {
 
     var template = document.querySelector('#feature-image-template');
     var featureNode = template.content.querySelector('.feature__image');
-    var docFrag = document.createDocumentFragment();
+    var documentFragment = document.createDocumentFragment();
     var featuresNode = dialogNode.querySelector('.lodge__features');
 
     list.forEach(function (feature) {
       var element = featureNode.cloneNode(true);
       element.classList.add('feature__image--' + feature);
-      docFrag.appendChild(element);
+      documentFragment.appendChild(element);
     });
 
-    featuresNode.appendChild(docFrag);
+    featuresNode.appendChild(documentFragment);
   }
 
   /**
@@ -96,16 +96,16 @@ window.showCard = (function () {
 
     var template = document.querySelector('#dialog-lodge-photos');
     var photoNode = template.content.querySelector('img');
-    var docFrag = document.createDocumentFragment();
+    var documentFragment = document.createDocumentFragment();
     var photosNode = dialogNode.querySelector('.lodge__photos');
 
     list.forEach(function (photo) {
       var element = photoNode.cloneNode(true);
       element.src = photo;
-      docFrag.appendChild(element);
+      documentFragment.appendChild(element);
     });
 
-    photosNode.appendChild(docFrag);
+    photosNode.appendChild(documentFragment);
   }
 
   /**
