@@ -10,7 +10,6 @@ window.initializePins = (function () {
     var pinTemplateNode = pinsMapNode.querySelector('#pin-template');
     var pinNode = pinTemplateNode.content.querySelector('.pin');
 
-    var i;
     var currentPin = null;
     var similarApartments = null;
 
