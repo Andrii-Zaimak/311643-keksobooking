@@ -13,15 +13,13 @@
  */
 window.synchronizeFields = (function () {
   return function (firstElement, secondElement, firstArr, secondArr, callback) {
-    var changeElement = function (evt) {
-      var target = evt.target;
-      var index = firstArr.indexOf(target.value);
+    firstElement.addEventListener('change', function (evt) {
+      var val = evt.target.value;
+      var index = firstArr.indexOf(val);
 
       if (typeof callback === 'function') {
         callback(secondElement, secondArr[index]);
       }
-    };
-
-    firstElement.addEventListener('change', changeElement);
+    });
   };
 })();

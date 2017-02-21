@@ -7,25 +7,15 @@
 window.initializePins = (function () {
   return function () {
     var pinsMapNode = document.querySelector('.tokyo__pin-map');
-    var pinsListNode = pinsMapNode.querySelectorAll('.pin');
+    var pinTemplateNode = pinsMapNode.querySelector('#pin-template');
+    var pinNode = pinTemplateNode.content.querySelector('.pin');
 
-    var i;
     var currentPin = null;
+    var similarApartments = null;
 
-    // add role and tabindex to pin's
-    for (i = 0; i < pinsListNode.length; i++) {
-      var element = pinsListNode[i];
-      element.setAttribute('role', 'checkbox');
-      element.setAttribute('tabindex', '0');
 
-      // find active pin
-      if (element.classList.contains('pin--active')) {
-        currentPin = element;
-        element.setAttribute('aria-checked', 'true');
-      } else {
-        element.setAttribute('aria-checked', 'false');
-      }
-    }
+    // load apartments list from server
+    window.load('https://intensive-javascript-server-pedmyactpq.now.sh/keksobooking/data', onLoadHandler);
 
     // add click pin listener
     pinsMapNode.addEventListener('click', function (evt) {
@@ -41,7 +31,7 @@ window.initializePins = (function () {
     /**
      * Set focus to last focused element.
      */
-    function setFocusToPin() {
+    function cardCloseHandler() {
       currentPin.focus();
       removePinActivity();
     }
@@ -75,7 +65,10 @@ window.initializePins = (function () {
       currentPin.setAttribute('aria-checked', 'true');
       currentPin.classList.add('pin--active');
       // show dialogNode
-      window.showCard(setFocusToPin);
+      var apInfo = similarApartments.find(function (apartment) {
+        return apartment.element === target;
+      });
+      window.showCard((apInfo ? apInfo.data : null), cardCloseHandler);
     }
 
     /**
@@ -92,6 +85,57 @@ window.initializePins = (function () {
       }
 
       return null;
+    }
+
+    /**
+     * Load data from server success.
+     * @param {Array|Object} data - data from server in JSON format.
+       */
+    function onLoadHandler(data) {
+      similarApartments = [];
+      // create pins
+      data.forEach(function (info) {
+        var elem = pinNode.cloneNode(true);
+
+        // set element styles
+        elem.style.left = info.location.x + 'px';
+        elem.style.top = info.location.y + 'px';
+        // add element avatar
+        elem.querySelector('img').src = info.author.avatar;
+        // add apartments data and element to apartments list
+        similarApartments.push({
+          data: info,
+          element: elem
+        });
+      });
+
+      addApartments(similarApartments);
+    }
+
+    /**
+     * Add apartments to map.
+     * @param {Array} list
+       */
+    function addApartments(list) {
+      removeApartments();
+
+      var documentFragment = document.createDocumentFragment();
+      list.forEach(function (apartment) {
+        documentFragment.appendChild(apartment.element);
+      });
+
+      pinsMapNode.appendChild(documentFragment);
+    }
+
+    /**
+     * Remove apartments from map.
+     */
+    function removeApartments() {
+      var list = pinsMapNode.querySelectorAll('.pin:not(.pin__main)');
+
+      list.forEach(function (element) {
+        pinsMapNode.removeChild(element);
+      });
     }
   };
 })();
