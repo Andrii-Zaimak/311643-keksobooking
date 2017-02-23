@@ -133,8 +133,8 @@ window.initializePins = (function () {
         var elem = pinNode.cloneNode(true);
 
         // set element styles
-        elem.style.left = info.location.x + 'px';
-        elem.style.top = info.location.y + 'px';
+        elem.style.left = (info.location.x - 28) + 'px';
+        elem.style.top = (info.location.y - 75) + 'px';
         // add element avatar
         elem.querySelector('img').src = info.author.avatar;
         // add apartments data and element to apartments list

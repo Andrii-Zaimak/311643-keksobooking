@@ -30,6 +30,7 @@
   formPriceNode.max = 1000000;
 
   // add validation option to form address
+  formAddressNode.readOnly = true;
   formAddressNode.required = true;
 
   window.synchronizeFields(formTimeNode, formTimeoutNode, ['12', '13', '14'], ['12', '13', '14'], syncValueWithValue);
