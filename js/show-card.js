@@ -7,10 +7,71 @@
 window.showCard = (function () {
   var dialogNode = document.querySelector('.dialog');
   var dialogCloseBtnNode = dialogNode.querySelector('.dialog__close');
+  var avatarNode = dialogNode.querySelector('.dialog__avatar');
+  var titleNode = dialogNode.querySelector('#dialog-title');
+  var addressNode = dialogNode.querySelector('.lodge__address');
+  var priceNode = dialogNode.querySelector('.lodge__price');
+  var typeNode = dialogNode.querySelector('.lodge__type');
+  var roomAndGuestNode = dialogNode.querySelector('.lodge__rooms-and-guests');
+  var checkInTimeNode = dialogNode.querySelector('.lodge__checkin-time');
+  var descriptionNode = dialogNode.querySelector('.lodge__description');
+
   var onClose = null;
 
   // card hide for default
   close();
+
+  // add dialog drag
+  avatarNode.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+      var top = dialogNode.offsetTop - shift.y;
+      var left = dialogNode.offsetLeft - shift.x;
+
+      // set current coordinate
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+      // check dialog 'y' min/max coordinate
+      if (dialogNode.offsetTop < 0) {
+        top = 0;
+      } else if (dialogNode.offsetTop > dialogNode.parentNode.offsetHeight - dialogNode.offsetHeight) {
+        top = dialogNode.parentNode.offsetHeight - dialogNode.offsetHeight;
+      }
+      // check dialog 'x' min/max coordinate
+      if (dialogNode.offsetLeft < 0) {
+        left = 0;
+      } else if (dialogNode.offsetLeft > dialogNode.parentNode.offsetWidth - dialogNode.offsetWidth) {
+        left = dialogNode.parentNode.offsetWidth - dialogNode.offsetWidth;
+      }
+      // set dialog window coordinate
+      dialogNode.style.top = top + 'px';
+      dialogNode.style.left = left + 'px';
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
 
   /**
    * Show dialog.
@@ -45,14 +106,6 @@ window.showCard = (function () {
       'house': 'Дом',
       'flat': 'Квартира'
     };
-    var avatarNode = dialogNode.querySelector('.dialog__avatar');
-    var titleNode = dialogNode.querySelector('#dialog-title');
-    var addressNode = dialogNode.querySelector('.lodge__address');
-    var priceNode = dialogNode.querySelector('.lodge__price');
-    var typeNode = dialogNode.querySelector('.lodge__type');
-    var roomAndGuestNode = dialogNode.querySelector('.lodge__rooms-and-guests');
-    var checkInTimeNode = dialogNode.querySelector('.lodge__checkin-time');
-    var descriptionNode = dialogNode.querySelector('.lodge__description');
 
     avatarNode.src = data.author.avatar;
     titleNode.innerText = data.offer.title;

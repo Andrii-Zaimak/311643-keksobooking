@@ -619,6 +619,8 @@ select option:hover {
     left: 536px;
 
     background-image: url("../img/pin.png");
+
+    transform: translate(-50%, -100%);
 }
 
 .pin:hover {
