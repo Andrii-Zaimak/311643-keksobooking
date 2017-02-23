@@ -11,12 +11,8 @@ window.load = (function () {
     xhr.timeout = 30000;
 
     xhr.addEventListener('load', function (evt) {
-      try {
-        if (typeof onLoad === 'function') {
-          onLoad(evt.target.response);
-        }
-      } catch (err) {
-        // TODO
+      if (typeof onLoad === 'function') {
+        onLoad(evt.target.response);
       }
     });
 

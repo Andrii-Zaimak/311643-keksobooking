@@ -13,6 +13,41 @@ window.initializePins = (function () {
     var currentPin = null;
     var similarApartments = null;
 
+    var filter = new window.Filter();
+
+    // filter change
+    filter.addEventListener('change', function (evt) {
+      var params = evt.params;
+      var list = similarApartments.filter(function (apartment) {
+        var info = apartment.data.offer;
+
+        if (params.type !== 'any' && info.type !== params.type) {
+          return false;
+        }
+
+        if (info.price < params.price.min || info.price > params.price.max) {
+          return false;
+        }
+
+        if (params.rooms !== 'any' && info.rooms !== +params.rooms) {
+          return false;
+        }
+
+        if (params.guests !== 'any' && info.guests !== +params.guests) {
+          return false;
+        }
+
+        if (params.features.length !== 0 && !params.features.every(function (element) {
+          return info.features.indexOf(element) !== -1;
+        })) {
+          return false;
+        }
+
+        return true;
+      });
+
+      showApartments(list);
+    });
 
     // load apartments list from server
     window.load('https://intensive-javascript-server-pedmyactpq.now.sh/keksobooking/data', onLoadHandler);
@@ -68,7 +103,7 @@ window.initializePins = (function () {
       var apInfo = similarApartments.find(function (apartment) {
         return apartment.element === target;
       });
-      window.showCard((apInfo ? apInfo.data : null), cardCloseHandler);
+      window.showCard(apInfo && apInfo.data, cardCloseHandler);
     }
 
     /**
@@ -109,20 +144,24 @@ window.initializePins = (function () {
         });
       });
 
-      addApartments(similarApartments);
+      showApartments(similarApartments, 3);
     }
 
     /**
-     * Add apartments to map.
+     * Show apartments in map.
      * @param {Array} list
-       */
-    function addApartments(list) {
+     * @param {number} count
+     */
+    function showApartments(list, count) {
       removeApartments();
 
       var documentFragment = document.createDocumentFragment();
-      list.forEach(function (apartment) {
-        documentFragment.appendChild(apartment.element);
-      });
+      for (var i = 0; i < list.length; i++) {
+        if (count && i >= count) {
+          break;
+        }
+        documentFragment.appendChild(list[i].element);
+      }
 
       pinsMapNode.appendChild(documentFragment);
     }

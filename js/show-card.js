@@ -95,7 +95,7 @@ window.showCard = (function () {
     removeElementsFrom(dialogNode.querySelector('.lodge__photos'));
 
     var template = document.querySelector('#dialog-lodge-photos');
-    var photoNode = template.content.querySelector('.lodge__photos-image');
+    var photoNode = template.content.querySelector('.lodge__photo');
     var documentFragment = document.createDocumentFragment();
     var photosNode = dialogNode.querySelector('.lodge__photos');
 
