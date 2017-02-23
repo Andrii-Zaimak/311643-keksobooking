@@ -15,7 +15,7 @@ window.initializePins = (function () {
 
     var filter = new window.Filter();
 
-    // filter change 
+    // filter change
     filter.addEventListener('change', function (evt) {
       var params = evt.params;
       var list = similarApartments.filter(function (apartment) {
@@ -103,7 +103,7 @@ window.initializePins = (function () {
       var apInfo = similarApartments.find(function (apartment) {
         return apartment.element === target;
       });
-      window.showCard((apInfo && apInfo.data), cardCloseHandler);
+      window.showCard(apInfo && apInfo.data, cardCloseHandler);
     }
 
     /**

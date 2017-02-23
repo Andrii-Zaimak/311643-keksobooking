@@ -50,16 +50,9 @@ window.Filter = function () {
   }
 
   function getFeatures() {
-    var list = [];
-    var features = housingFeaturesNode.querySelectorAll('input[type=\'checkbox\']');
-
-    features.forEach(function (element) {
-      if (element.checked) {
-        list.push(element.value);
-      }
+    return Array.from(housingFeaturesNode.querySelectorAll('input[name=feature]:checked'), function (node) {
+      return node.value;
     });
-
-    return list;
   }
 
 };
