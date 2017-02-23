@@ -4,7 +4,7 @@
 
 'use strict';
 
-(function () {
+window.form = (function () {
   var noticeFormNode = document.querySelector('.notice__form');
   var formTitleNode = noticeFormNode.querySelector('#title');
   var formPriceNode = noticeFormNode.querySelector('#price');
@@ -58,4 +58,10 @@
   function syncValueWithMin(element, value) {
     element.min = value;
   }
+
+  return {
+    setAddress: function (x, y) {
+      formAddressNode.value = 'x: ' + x + ', y: ' + y;
+    }
+  };
 })();
