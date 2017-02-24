@@ -498,6 +498,7 @@ select option:hover {
 
 .dialog {
     position: absolute;
+    z-index: 102;
     top: 70px;
     left: 20px;
 
@@ -637,6 +638,7 @@ select option:hover {
 }
 
 .pin__main {
+    z-index: 101;
     width: 75px;
     height: 94px;
 

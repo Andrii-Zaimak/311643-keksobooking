@@ -60,7 +60,7 @@ window.initializePins = (function () {
         y: evt.clientY
       };
 
-      var onMouseMove = function (moveEvt) {
+      function onMouseMove(moveEvt) {
         moveEvt.preventDefault();
 
         var shift = {
@@ -92,14 +92,14 @@ window.initializePins = (function () {
         pinMainNode.style.left = left + 'px';
         // set address
         window.form.setAddress(pinMainNode.style.top, pinMainNode.style.left);
-      };
+      }
 
-      var onMouseUp = function (upEvt) {
+      function onMouseUp(upEvt) {
         upEvt.preventDefault();
 
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
-      };
+      }
 
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
