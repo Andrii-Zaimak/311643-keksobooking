@@ -4,7 +4,7 @@
 
 'use strict';
 
-(function () {
+window.form = (function () {
   var noticeFormNode = document.querySelector('.notice__form');
   var formTitleNode = noticeFormNode.querySelector('#title');
   var formPriceNode = noticeFormNode.querySelector('#price');
@@ -30,6 +30,7 @@
   formPriceNode.max = 1000000;
 
   // add validation option to form address
+  formAddressNode.readOnly = true;
   formAddressNode.required = true;
 
   window.synchronizeFields(formTimeNode, formTimeoutNode, ['12', '13', '14'], ['12', '13', '14'], syncValueWithValue);
@@ -57,4 +58,10 @@
   function syncValueWithMin(element, value) {
     element.min = value;
   }
+
+  return {
+    setAddress: function (x, y) {
+      formAddressNode.value = 'x: ' + x + ', y: ' + y;
+    }
+  };
 })();

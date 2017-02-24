@@ -498,6 +498,7 @@ select option:hover {
 
 .dialog {
     position: absolute;
+    z-index: 102;
     top: 70px;
     left: 20px;
 
@@ -619,6 +620,8 @@ select option:hover {
     left: 536px;
 
     background-image: url("../img/pin.png");
+
+    transform: translate(-50%, -100%);
 }
 
 .pin:hover {
@@ -635,6 +638,7 @@ select option:hover {
 }
 
 .pin__main {
+    z-index: 101;
     width: 75px;
     height: 94px;
 

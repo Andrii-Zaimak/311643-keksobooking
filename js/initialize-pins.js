@@ -6,7 +6,9 @@
 
 window.initializePins = (function () {
   return function () {
-    var pinsMapNode = document.querySelector('.tokyo__pin-map');
+    var tokyoNode = document.querySelector('.tokyo');
+    var pinsMapNode = tokyoNode.querySelector('.tokyo__pin-map');
+    var pinMainNode = pinsMapNode.querySelector('.pin__main');
     var pinTemplateNode = pinsMapNode.querySelector('#pin-template');
     var pinNode = pinTemplateNode.content.querySelector('.pin');
 
@@ -47,6 +49,60 @@ window.initializePins = (function () {
       });
 
       showApartments(list);
+    });
+
+    // add dialog drag
+    pinMainNode.addEventListener('mousedown', function (evt) {
+      evt.preventDefault();
+
+      var startCoords = {
+        x: evt.clientX,
+        y: evt.clientY
+      };
+
+      function onMouseMove(moveEvt) {
+        moveEvt.preventDefault();
+
+        var shift = {
+          x: startCoords.x - moveEvt.clientX,
+          y: startCoords.y - moveEvt.clientY
+        };
+        var top = pinMainNode.offsetTop - shift.y;
+        var left = pinMainNode.offsetLeft - shift.x;
+
+        // set current coordinate
+        startCoords = {
+          x: moveEvt.clientX,
+          y: moveEvt.clientY
+        };
+        // check pin 'y' min/max coordinate
+        if (pinMainNode.offsetTop < pinMainNode.offsetHeight) {
+          top = pinMainNode.offsetHeight;
+        } else if (pinMainNode.offsetTop > tokyoNode.offsetHeight) {
+          top = tokyoNode.offsetHeight;
+        }
+        // check pin 'x' min/max coordinate
+        if (pinMainNode.offsetLeft < 0) {
+          left = 0;
+        } else if (pinMainNode.offsetLeft > tokyoNode.offsetWidth) {
+          left = tokyoNode.offsetWidth;
+        }
+        // set pin window coordinate
+        pinMainNode.style.top = top + 'px';
+        pinMainNode.style.left = left + 'px';
+        // set address
+        window.form.setAddress(pinMainNode.style.top, pinMainNode.style.left);
+      }
+
+      function onMouseUp(upEvt) {
+        upEvt.preventDefault();
+
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
     });
 
     // load apartments list from server
