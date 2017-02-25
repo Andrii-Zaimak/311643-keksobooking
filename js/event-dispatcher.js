@@ -4,9 +4,10 @@
 
 'use strict';
 
-window.EventDispatcher = function () {
+window.EventDispatcher = (function () {
   this._listenersByEvent = {};
-};
+  return this;
+});
 
 window.EventDispatcher.prototype.addEventListener = function (type, listener, scope) {
   if (!this._listenersByEvent[type]) {

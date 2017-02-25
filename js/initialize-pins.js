@@ -39,10 +39,10 @@ window.initializePins = (function () {
           return false;
         }
 
-        if (params.features.length !== 0 && !params.features.every(function (element) {
-          return info.features.indexOf(element) !== -1;
-        })) {
-          return false;
+        if (params.features.length > 0) {
+          return params.features.every(function (element) {
+            return info.features.indexOf(element) !== -1;
+          });
         }
 
         return true;
@@ -206,10 +206,14 @@ window.initializePins = (function () {
     /**
      * Show apartments in map.
      * @param {Array} list
-     * @param {number} count
+     * @param {number} [count=undefined]
      */
     function showApartments(list, count) {
       removeApartments();
+
+      if (count && count === 0) {
+        return;
+      }
 
       var documentFragment = document.createDocumentFragment();
       for (var i = 0; i < list.length; i++) {
