@@ -5,9 +5,16 @@
 'use strict';
 
 window.EventDispatcher = (function () {
-  this._listenersByEvent = {};
 
-  window.EventDispatcher.prototype.addEventListener = function (type, listener, scope) {
+  /**
+   * Constructor.
+   * @constructor
+   */
+  function EventDispatcher() {
+    this._listenersByEvent = {};
+  }
+
+  EventDispatcher.prototype.addEventListener = function (type, listener, scope) {
     if (!this._listenersByEvent[type]) {
       this._listenersByEvent[type] = [];
     }
@@ -17,7 +24,7 @@ window.EventDispatcher = (function () {
       scope: scope
     });
   };
-  window.EventDispatcher.prototype.removeEventListener = function (type, listener) {
+  EventDispatcher.prototype.removeEventListener = function (type, listener) {
     var events = this._listenersByEvent[type];
     if (events) {
       for (var i = 0; i < events.length; i++) {
@@ -28,7 +35,7 @@ window.EventDispatcher = (function () {
       }
     }
   };
-  window.EventDispatcher.prototype.dispatchEvent = function (type, eventArgs) {
+  EventDispatcher.prototype.dispatchEvent = function (type, eventArgs) {
     var events = this._listenersByEvent[type];
     if (events && events.length > 0) {
       for (var i = 0; i < events.length; i++) {
@@ -39,7 +46,6 @@ window.EventDispatcher = (function () {
       }
     }
   };
-  return this;
-});
 
-
+  return EventDispatcher;
+})();
