@@ -59,3 +59,5 @@ window.Filter = (function () {
 })();
 
 window.Filter.prototype = Object.create(window.EventDispatcher.prototype);
+
+

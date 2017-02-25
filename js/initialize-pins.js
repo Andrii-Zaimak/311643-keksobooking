@@ -206,7 +206,7 @@ window.initializePins = (function () {
     /**
      * Show apartments in map.
      * @param {Array} list
-     * @param {number} [count=undefined]
+     * @param {number} [count]
      */
     function showApartments(list, count) {
       removeApartments();
