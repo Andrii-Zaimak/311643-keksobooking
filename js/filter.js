@@ -4,9 +4,7 @@
 
 'use strict';
 
-window.Filter = function () {
-  window.EventDispatcher.call(this);
-
+window.Filter = (function () {
   var filterNode = document.querySelector('.tokyo__filters');
   var housingTypeNode = filterNode.querySelector('#housing_type');
   var housingPriceNode = filterNode.querySelector('#housing_price');
@@ -14,7 +12,16 @@ window.Filter = function () {
   var housingGuestsNumberNode = filterNode.querySelector('#housing_guests-number');
   var housingFeaturesNode = filterNode.querySelector('#housing_features');
 
-  var self = this;
+  var self;
+
+  /**
+   * Constructor.
+   * @constructor
+   */
+  function Filter() {
+    self = this;
+    window.EventDispatcher.call(this);
+  }
 
   housingTypeNode.addEventListener('change', update);
   housingPriceNode.addEventListener('change', update);
@@ -55,6 +62,7 @@ window.Filter = function () {
     });
   }
 
-};
+  Filter.prototype = Object.create(window.EventDispatcher.prototype);
 
-window.Filter.prototype = Object.create(window.EventDispatcher.prototype);
+  return Filter;
+})();

@@ -5,7 +5,8 @@
 'use strict';
 
 window.showCard = (function () {
-  var dialogNode = document.querySelector('.dialog');
+  var tokyoNode = document.querySelector('.tokyo');
+  var dialogNode = tokyoNode.querySelector('.dialog');
   var dialogCloseBtnNode = dialogNode.querySelector('.dialog__close');
   var avatarNode = dialogNode.querySelector('.dialog__avatar');
   var titleNode = dialogNode.querySelector('#dialog-title');
@@ -48,14 +49,14 @@ window.showCard = (function () {
       // check dialog 'y' min/max coordinate
       if (dialogNode.offsetTop < 0) {
         top = 0;
-      } else if (dialogNode.offsetTop > dialogNode.parentNode.offsetHeight - dialogNode.offsetHeight) {
-        top = dialogNode.parentNode.offsetHeight - dialogNode.offsetHeight;
+      } else if (dialogNode.offsetTop > tokyoNode.offsetHeight - dialogNode.offsetHeight) {
+        top = tokyoNode.offsetHeight - dialogNode.offsetHeight;
       }
       // check dialog 'x' min/max coordinate
       if (dialogNode.offsetLeft < 0) {
         left = 0;
-      } else if (dialogNode.offsetLeft > dialogNode.parentNode.offsetWidth - dialogNode.offsetWidth) {
-        left = dialogNode.parentNode.offsetWidth - dialogNode.offsetWidth;
+      } else if (dialogNode.offsetLeft > tokyoNode.offsetWidth - dialogNode.offsetWidth) {
+        left = tokyoNode.offsetWidth - dialogNode.offsetWidth;
       }
       // set dialog window coordinate
       dialogNode.style.top = top + 'px';
@@ -113,7 +114,7 @@ window.showCard = (function () {
     priceNode.innerHTML = data.offer.price + '&#x20bd;/ночь';
     typeNode.innerText = apartmentTypes[data.offer.type];
     roomAndGuestNode.innerText = data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
-    checkInTimeNode.innerText = 'Заед после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
+    checkInTimeNode.innerText = 'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
     setFeatures(data.offer.features);
     descriptionNode.innerText = data.offer.description;
     showPhotos(data.offer.photos);
